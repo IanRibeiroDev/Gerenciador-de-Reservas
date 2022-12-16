@@ -10,9 +10,10 @@ def startBinding(port):
 
 if __name__ == "__main__":
     server_address = startBinding(20000)
-    message = '' 
-    print('Bem-vind@. Digite um dos seguintes comandos: RSV, ALT, DEL ou FIM')
-    while message != 'FIM':
+    message = ''
+    print('Bem-vind@. Digite Menu para começar')
+
+    while message != '5':
 
         message = input('Digite a mensagem: ')
 
@@ -20,5 +21,5 @@ if __name__ == "__main__":
         #client_thread = threading.Thread(target=sendMessage, args=(data, address))
 
         data, address = sock.recvfrom(1024)
-        print(f'Servidor diz: {data.decode()}')
+        print(f'Servidor: {data.decode()}')
         data = '' 

@@ -7,9 +7,9 @@ socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 host = 'localhost'
 porta = 20000
 socket.bind((host, porta))
-server = (host, porta)
+server = ('localhost', 20000)
 
-print(f'Servidor {server[0]} na porta {server[1]}')
+print(f'Servidor ativo na porta {server[1]}')
 
 
 def handleClient(client_data, client_address):
