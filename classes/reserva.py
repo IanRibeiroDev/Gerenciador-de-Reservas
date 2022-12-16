@@ -1,47 +1,31 @@
-from listaEncadeada import listaEncadeada
+from ListaSequencial import ListaSequencial
+from ListaEncadeada import ListaEncadeada
+from ChainingHashTable import ChainingHashTable
 
 class Reserva:
     def __init__(self):
-        self.__meses = listaEncadeada()
+        self.__meses = ListaSequencial()
 
-        for i in range(1,13):
-            nomeVariavel = 'mes' + str(i)
-            temp = vars()[nomeVariavel] = listaEncadeada()
-            temp.insereFim('Deu certo' + str(i))
-            self.__meses.insereFim(temp)
-        
+        for i in range(12):
+            # Verifica se o mês tem 31 dias.
+            if i in [0, 2, 4, 6, 7, 9, 11]:
+                dias = ChainingHashTable(31)
+                self.__meses.inserir(i, dias)
+
+            # Verifica se o mês é Fevereiro.
+            elif i == 1:
+                dias = ChainingHashTable(28)
+                self.__meses.inserir(i, dias)
+
+            # Se não entrou nos outros laços, então o mês tem 30 dias.
+            else:
+                dias = ChainingHashTable(30)
+                self.__meses.inserir(i, dias)
         
     def getter(self):
-        for i in range(1,13):
-            print(self.__meses.elemento(i))
+        print(self.__meses)
 
-'''
-for i in range(1,10):
-    resultado = 'lol' + str(i)
-    variavel = 'ano' + str(i)
-    vars()[variavel] = resultado
 
-print(ano5)
-
-lista = [[1[50,51,52],2[60,61,62],3,4],10,11]
-'''
-'''
-lp = listaEncadeada()
-nomeVariavel = 'mes' + '1'
-temp = vars()[nomeVariavel] = listaEncadeada('Funciona')
-
-nomeVariavel = 'mes' + '2'
-temp2 = vars()[nomeVariavel] = listaEncadeada('Bem!')
-lp.insereInicio(temp)
-lp.insereFim(temp2)
-print(lp)
-
-lista2 = ['isso']
-lista3 = ['aquilo']
-lista1 = [lista2, lista3]
-
-print(lista1)
-'''
 
 a = Reserva()
 a.getter()

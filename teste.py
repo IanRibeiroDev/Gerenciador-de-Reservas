@@ -1,8 +1,6 @@
-from classes.listaEncadeada import listaEncadeada
-import os
+def publico():
+    __privado('Veio do publico.')
 
-
-a = listaEncadeada('s')
-print(a)
-a.removeFim()
-a.removeFim()
+def __privado(msg = 'Veio do privado'):
+    print(msg)
+    

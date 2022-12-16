@@ -1,11 +1,11 @@
 from node import Node
 
-class listaEncadeadaException(Exception):
+class ListaEncadeadaException(Exception):
     def __init__(self, erro):
         super().__init__(erro)
 
 
-class listaEncadeada:
+class ListaEncadeada:
     def __init__(self, carga:any = None):
         if carga != None:
             self.__head = Node(carga)
@@ -26,10 +26,10 @@ class listaEncadeada:
 
     def elemento(self, posição:int): # Retorna a carga do node que se encontra na posição indicada.
         if self.estaVazia():
-            raise listaEncadeadaException('Lista vazia!')
+            raise ListaEncadeadaException('Lista vazia!')
 
         if posição < 1 or posição > self.__tamanho:
-            raise listaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho}.')
+            raise ListaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho}.')
 
         cursor = self.__head
         contador = 1
@@ -43,7 +43,7 @@ class listaEncadeada:
 
     def busca(self, valor:any): # Retorna a posição em que o valor se encontra na lista.
         if self.estaVazia():
-            raise listaEncadeadaException('Lista vazia!')
+            raise ListaEncadeadaException('Lista vazia!')
 
         cursor = self.__head
         posição = 1
@@ -55,15 +55,15 @@ class listaEncadeada:
             cursor = cursor.prox
             posição += 1
 
-        raise listaEncadeadaException('O valor não se encontra na lista!')
+        raise ListaEncadeadaException('O valor não se encontra na lista!')
 
 
     def modificar(self, posição:int, novoValor:any):
         if self.estaVazia():
-            raise listaEncadeadaException('Lista vazia!')
+            raise ListaEncadeadaException('Lista vazia!')
 
         if posição < 1 or posição > self.__tamanho:
-            raise listaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho}.')
+            raise ListaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho}.')
 
         cursor = self.__head
         contador = 1
@@ -77,7 +77,7 @@ class listaEncadeada:
 
     def inserir(self, posição:int, valor:any):
         if posição < 1 or posição > self.__tamanho + 1:
-            raise listaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho + 1}.')
+            raise ListaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho + 1}.')
 
         novoNode = Node(valor)
 
@@ -105,10 +105,10 @@ class listaEncadeada:
 
     def remover(self, posição:int):
         if self.estaVazia():
-            raise listaEncadeadaException('Lista vazia!')
+            raise ListaEncadeadaException('Lista vazia!')
 
         if posição < 1 or posição > self.__tamanho:
-            raise listaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho}.')
+            raise ListaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho}.')
 
         if posição == 1:
             antigo = self.__head
@@ -146,7 +146,7 @@ class listaEncadeada:
 
     def removeInicio(self):
         if self.estaVazia():
-            raise listaEncadeadaException('Lista vazia!')
+            raise ListaEncadeadaException('Lista vazia!')
 
         antigo = self.__head
         self.__head = self.__head.prox
@@ -173,7 +173,7 @@ class listaEncadeada:
 
     def removeFim(self):
         if self.estaVazia():
-            raise listaEncadeadaException('Lista vazia!')
+            raise ListaEncadeadaException('Lista vazia!')
 
         if self.__tamanho == 1:
             self.__head = None
@@ -190,7 +190,7 @@ class listaEncadeada:
 
 
     def concatenar(self, lista2):
-        listaConcatenada = listaEncadeada()
+        listaConcatenada = ListaEncadeada()
 
         for i in range(self.__tamanho):
             listaConcatenada.insereFim(self.elemento(i + 1))

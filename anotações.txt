@@ -1,0 +1,4 @@
+1 - Lista sequencial para os meses faz mais sentido, pois o numero de meses é predefinido (12).
+
+2 - Colocar uma lista sequencial com os 10 proximos anos, ano atual incluído, e uma encadeada com os anos que já passaram. Se
+não der tempo, deixa uma encadeada para todos os anos mesmo.
