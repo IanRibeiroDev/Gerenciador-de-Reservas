@@ -5,14 +5,14 @@ serverStatus = {
 }
 
 menu = {
-    1: 'Envie 1 para: Listas mesas disponíveis',
-    2: 'Envie 2 para: Fazer uma nova reserva',
-    3: 'Envie 3 para: Alterar uma reserva efetuada',
-    4: 'Envie 4 para: Excluir uma reserva efetuada',
+    1: 'Envie 1 para: Fazer uma nova reserva',
+    2: 'Envie 2 para: Alterar uma reserva efetuada',
+    3: 'Envie 3 para: Excluir uma reserva efetuada',
+    4: 'Envie 4 para: Listar todas as reservas efetuadas.', # Apenas no mês ou dia especificado, dependendo da complexidade da implementação.
     5: 'Envie 5 para: Encerrar sua conexão.'
 } #Fazer isso aparecer para o cliente em linhas diferentes.
 
-def validatingException(Exception):
+class ValidatingException(Exception):
     def __init__(self, msg):
         super().__init__(msg)
 
@@ -41,4 +41,4 @@ def validateMessage(message):
 
         return f'{serverStatus[400]} Digite um comando válido.'
     except:
-        raise validatingException (f'Erro interno. Verificando...')
+        raise ValidatingException (f'Erro interno. Verificando...')

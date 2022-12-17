@@ -1,4 +1,24 @@
+Estrutura de Dados:
+
 1 - Lista sequencial para os meses faz mais sentido, pois o numero de meses é predefinido (12).
 
 2 - Colocar uma lista sequencial com os 10 proximos anos, ano atual incluído, e uma encadeada com os anos que já passaram. Se
 não der tempo, deixa uma encadeada para todos os anos mesmo.
+
+3 - Os dias não podem ser utilizados como keys para a hash table, porque quando uma key se repete, o valor dela é susbtituído,
+fazendo assim com que apenas uma mesa possa ser reservada por dia.
+
+4 - Utilizar nome do cliente + CPF pra gerar o hash.
+
+5 - Criar função que busca o node, cuja chave é dada como parâmetro (value(dia):Int), e retorna a hash table nela contida.(Feito)
+
+
+Protocolos:
+
+1 - Listar mesas reservadas.
+
+Lógica de reservar uma mesa:
+
+Ano --> Mes --> Dia(cria se n houver) --> HashTable --> Verficar mesas disponiveis --> Retorna ao cliente as opções de mesas disponíveis
+Cliente escolhe mesa --> Ano --> Mes --> Dia --> HashTable --> insere a reserva
+

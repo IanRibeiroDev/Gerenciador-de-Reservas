@@ -1,4 +1,4 @@
-from node import Node
+from Nodes import NodeLista
 
 class ListaEncadeadaException(Exception):
     def __init__(self, erro):
@@ -8,7 +8,7 @@ class ListaEncadeadaException(Exception):
 class ListaEncadeada:
     def __init__(self, carga:any = None):
         if carga != None:
-            self.__head = Node(carga)
+            self.__head = NodeLista(carga)
             self.__tamanho = 1
 
         else:
@@ -79,7 +79,7 @@ class ListaEncadeada:
         if posição < 1 or posição > self.__tamanho + 1:
             raise ListaEncadeadaException(f'Informe uma posição válida entre 1 e {self.__tamanho + 1}.')
 
-        novoNode = Node(valor)
+        novoNode = NodeLista(valor)
 
         if self.estaVazia():
             self.__head = novoNode
@@ -132,7 +132,7 @@ class ListaEncadeada:
             
 
     def insereInicio(self, valor:any):
-        novoNode = Node(valor)
+        novoNode = NodeLista(valor)
 
         if self.estaVazia():
             self.__head = novoNode
@@ -155,7 +155,7 @@ class ListaEncadeada:
 
 
     def insereFim(self, valor:any):
-        novoNode = Node(valor)
+        novoNode = NodeLista(valor)
         
         if self.estaVazia():
             self.__head = novoNode
