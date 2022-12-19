@@ -12,13 +12,138 @@ fazendo assim com que apenas uma mesa possa ser reservada por dia.
 
 5 - Criar função que busca o node, cuja chave é dada como parâmetro (value(dia):Int), e retorna a hash table nela contida.(Feito)
 
+6 - A chave da HashTable será o nome do usuário que a reservou (talvez o CPF também), já o conteúdo, o número da mesa.
+
+7 - A chave da lista de mesas disponíveis será "mesasDisponiveis", essa lista será encadeada. (feito)
+
 
 Protocolos:
 
-1 - Listar mesas reservadas.
+1 - Efetuar uma reserva.
 
 Lógica de reservar uma mesa:
 
-Ano --> Mes --> Dia(cria se n houver) --> HashTable --> Verficar mesas disponiveis --> Retorna ao cliente as opções de mesas disponíveis
-Cliente escolhe mesa --> Ano --> Mes --> Dia --> HashTable --> insere a reserva
 
+Cliente informa que quer reserva uma mesa em uma certa data.
+
+Servidor retorna a lista de mesas disponíveis daquela data e pede para cliente escolher uma.
+
+Cliente escolhe.
+
+Servidor adiciona reserva.
+
+
+Verificações necessárias:
+
+
+Verificar se a data é válida.
+
+Tem que haver uma verificação de se o cliente ja nao efetuou uma reserva nesse dia. Caso o tenha, devolve uma mensagem perguntando
+se deseja alterá-la. Essa alteração deve ser feita no mesmo dia. Lembrar de adicionar mesa antiga a lista de mesas disponiveis, e
+remover a nova dessa mesma.
+
+Antes de adicionar a reserva, é necessario verificar se a mesa ainda se encontra disponível. Caso não, servidor envia nova lista de
+mesas disponiveis.
+
+
+Comandos a serem recebidos:
+
+1 servidor: CLI-NEW-Ano-Mes-Dia
+1 cliente: 100+OK-1-2-3-4-5-6-...(todas as mesas disponiveis)
+2 servidor: CLI-NEW-Mesa-NomeCliente
+2 cliente: 100+OK ou 400+ERR
+
+
+2 - Excluir reserva
+
+Lógica para excluir reserva:
+
+
+Cliente manda mensagem dizendo que quer excluir reserva.
+
+Servidor recebe, executa listarReservasAno(NomeCliente) em cada ano da lista, devolve a lista de todas as reservas feitas pelo 
+cliente para ele.
+
+Cliente escolhe qual deseja deletar.
+
+Servidor deleta reserva.
+
+
+Verificações necessárias:
+
+
+Se ele nunca efetuou uma reserva, retorna mensagem de erro e encerra.
+
+Verificar se a reserva que ele escolheu deletar realmente é uma reserva que se encontra na lista que ele recebeu.
+
+
+Comandos a serem recebidos:
+
+1 servidor: CLI-DEL-NomeCliente
+1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
+2 servidor: CLI-DEL-Ano-Mes-Dia
+2 cliente: 100+OK ou 400+ERR
+
+
+
+3 - Listar todas as reservas efetuadas.
+
+Lógica de listar todas as reservas de um usuário:
+
+
+Cliente informa que quer ver todas as reservas que efetuou.
+
+Servidor lista todas as reservas do cliente (método listarReservasAno executado em cada ano) e devolve a lista para o cliente.
+
+
+Verificações necessárias:
+
+
+Se ele nunca efetuou uma reserva, retorna mensagem de erro e encerra.
+
+
+Comandos a serem recebidos:
+
+1 servidor: CLI-LIST-NomeCliente
+1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
+
+
+4 - Alterar reserva efetuada.
+
+Lógica de alterar reserva:
+
+Cliente informa que deseja alterar uma reserva.
+
+Lista todas as reservas do cliente (método listarReservasAno executado em cada ano) e devolve a lista para o cliente, e pergunta:
+Qual deseja alterar? Qual a nova data de reserva?
+
+Cliente informa os dados necessarios.
+
+Servidor verifica a lista de mesas disponíveis da nova data de reserva, e a retorna pedindo para q o cliente escolha uma.
+
+Cliente toma uma decisao.
+
+Servidor adiciona a nova reserva do cliente, depois remove a reserva antiga.
+
+
+Verificações necessárias:
+
+
+Se ele nunca efetuou uma reserva, retorna mensagem de erro e encerra.
+
+Verificar se a reserva que ele escolheu alterar realmente é uma reserva que se encontra na lista que ele recebeu.
+
+Verificar se a nova data de reserva é válida.
+
+Antes de adicionar a reserva, é necessario verificar se a mesa ainda se encontra disponível. Caso não, servidor envia nova lista de
+mesas disponiveis.
+
+
+Comandos a serem RECEBIDOS:
+
+1 servidor: CLI-ALT-NomeCliente
+1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
+2 servidor: CLI-ALT-NovoAno-NovoMes-NovoDia-AntigoAno-AntigoMes-AntigoDia
+2 cliente: 100+OK-1-2-3-4-5-6-...(todas as mesas disponiveis)
+3 servidor: CLI-ALT-NumeroMesa
+3 servidor: 100+OK ou 400+ERR

@@ -201,6 +201,18 @@ class ListaEncadeada:
         return listaConcatenada
 
 
+    def stringify(self) -> str:
+        listaStr = ''
+
+        cursor = self.__head
+
+        while cursor != None:
+            listaStr += (str(cursor.carga) + '-')
+            cursor = cursor.prox
+
+        return listaStr
+
+
     def __str__(self) -> str:
         listaStr = '[ '
 

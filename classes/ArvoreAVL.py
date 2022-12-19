@@ -4,6 +4,8 @@
 #  https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
 # Adaptações feitas pelo professor Alex para a disciplina de Estrutura de Dados
 from Nodes import NodeArvore
+from io import StringIO
+import sys
   
 # Classe AVL tree 
 class AVLTree(object): 
@@ -303,24 +305,36 @@ class AVLTree(object):
             return node.hashTable
 
     # Método em ordem da árvore, servirá como um print para saber que dias já foram inseridos.
-    def emOrdem(self):
-        self.__emOrdem(self.__root)
+    # Caso imprimir seja False, ele retornará uma string com todos os nós em ordem, ao invés de printar no console.
+    def emOrdem(self, imprimir = True):
+        if not imprimir:
+            buffer = StringIO()
+            sys.stdout = buffer
 
-    def __emOrdem(self, node, nivel = 0):
+        self.__emOrdem(self.__root, imprimir)
+
+        if not imprimir:
+            stringNodes = buffer.getvalue()
+            sys.stdout = sys.__stdout__
+
+            return stringNodes
+
+
+    def __emOrdem(self, node, imprimir, nivel = 0):
         if node == None: 
             return
   
-        self.__emOrdem(node.left, nivel + 1)  
+        self.__emOrdem(node.left, imprimir, nivel + 1)  
         print(f'{node.value} ', end="")
-        self.__emOrdem(node.right, nivel + 1) 
+        self.__emOrdem(node.right, imprimir, nivel + 1) 
 
-        if nivel == 0:
+        if nivel == 0 and imprimir:
             print()
 
-'''
+
     def __str__(self):
-        return self.emOrdem()
-'''
+        return self.emOrdem(False)
+
 
 if __name__ == '__main__':
     
@@ -342,7 +356,7 @@ if __name__ == '__main__':
         myTree.insertHashNode(6)
         myTree.insertHashNode(27)
         myTree.insertHashNode(4)
-        
+        print(myTree)
         myTree.emOrdem()
 
         myTree.getHashNode(4).put(3,'deu certo')

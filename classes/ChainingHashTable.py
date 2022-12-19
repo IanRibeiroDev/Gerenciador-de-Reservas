@@ -33,7 +33,6 @@ class ChainingHashTable:
             Aplicação do cálculo do hash modular.
         '''
         valorHashado = hash(key)
-        print(valorHashado)
         return  valorHashado % self.size
 
     def put(self, key:any, value:any)->int:
