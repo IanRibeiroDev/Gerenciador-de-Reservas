@@ -1,7 +1,7 @@
-from ListaSequencial import ListaSequencial
-from ListaEncadeada import ListaEncadeada
-from ArvoreAVL import AVLTree
-from ChainingHashTable import AbsentKeyException
+from classes.ListaSequencial import ListaSequencial
+from classes.ListaEncadeada import ListaEncadeada
+from classes.ArvoreAVL import AVLTree
+from classes.ChainingHashTable import AbsentKeyException
 
 class GerenciadorReservas:
     def __init__(self, ano:int):
@@ -161,6 +161,14 @@ if __name__ == '__main__':
     print()
     print('George: ', splitGeorge)
 
+    b = GerenciadorReservas(2023)
+    c = GerenciadorReservas(2023)
+
+    b.verificarMesasDisponiveis(2,1)
+    b.insereReserva(2,1,5,'fulano')
+    res = b.listarReservasMes(2,'fulano')
+    del b
+    del c
     
 '''
     for i in range(1, 13):

@@ -48,7 +48,7 @@ mesas disponiveis.
 
 Comandos a serem recebidos:
 
-1 servidor: CLI-NEW-Ano-Mes-Dia
+1 servidor: CLI-NEW-NomeCliente-Ano-Mes-Dia
 1 cliente: 100+OK-1-2-3-4-5-6-...(todas as mesas disponiveis)
 2 servidor: CLI-NEW-Mesa-NomeCliente
 2 cliente: 100+OK ou 400+ERR

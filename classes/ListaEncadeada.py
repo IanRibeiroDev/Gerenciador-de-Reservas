@@ -1,4 +1,4 @@
-from Nodes import NodeLista
+from classes.Nodes import NodeLista
 
 class ListaEncadeadaException(Exception):
     def __init__(self, erro):

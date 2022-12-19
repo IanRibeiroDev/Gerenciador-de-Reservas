@@ -3,7 +3,7 @@
 #  https://www.geeksforgeeks.org/avl-tree-set-1-insertion/
 #  https://www.geeksforgeeks.org/avl-tree-set-2-deletion/?ref=lbp
 # Adaptações feitas pelo professor Alex para a disciplina de Estrutura de Dados
-from Nodes import NodeArvore
+from classes.Nodes import NodeArvore
 from io import StringIO
 import sys
   

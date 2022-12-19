@@ -1,4 +1,4 @@
-from ChainingHashTable import ChainingHashTable
+from classes.ChainingHashTable import ChainingHashTable
 
 class NodeLista:
     def __init__(self, carga:any):
