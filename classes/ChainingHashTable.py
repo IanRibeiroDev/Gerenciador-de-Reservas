@@ -41,7 +41,6 @@ class ChainingHashTable:
         Se a chave já existir, apenas atualiza o valor correspondente
         '''
         slot = self.__hash( key )
-        print(f'key {key} mapeada ao slot {slot}')
 
         for entry in self.table[slot]: # varre as entradas da ht para ver se já existe a chave
             if key == entry.key:
@@ -137,28 +136,4 @@ class ChainingHashTable:
             for entry in items:
                 print(f'[ {entry.key},{entry.value} ] ',end='')
             print()
-    
-    # Vamos esquecer disso aqui, foi apenas uma fase ;)
-    '''
-    # Feito por Ian
-    def forcePut(self, key:any, value:any)->int:
-        # Adiciona um par chave/valor à tabela hash
-        # Cria a chave de forma dinâmica para garantir que seja inserido um novo valor no bucket desejado,
-        # ao invés de susbstituir o valor atual por outro.
-
-        slot = self.__hash(key + (self.size * len(self.table[slot])))
-
-        if len(self.table[slot]) != 0:
-            newKey = self.__hash(key + (self.size * len(self.table[slot])))
-
-        print(f'key {key} mapeada ao slot {slot}')
-
-        for entry in self.table[slot]: # varre as entradas da ht para ver se já existe a chave
-            if key == entry.key:
-                entry.value = value # se a chave existir, altera sua carga
-                return slot
-            
-        self.table[slot].append(Entry(key,value))
-        return slot
-    '''
     

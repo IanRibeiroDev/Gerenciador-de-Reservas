@@ -19,6 +19,13 @@ fazendo assim com que apenas uma mesa possa ser reservada por dia.
 
 Protocolos:
 
+Status = {
+    100 : OK
+    200 : Nao tem mais mesas disponiveis nesse dia.
+    201 : A mesa ja foi reservada por outro cliente.
+}
+
+
 1 - Efetuar uma reserva.
 
 Lógica de reservar uma mesa:
@@ -36,21 +43,19 @@ Servidor adiciona reserva.
 Verificações necessárias:
 
 
-Verificar se a data é válida.
+***************Verificar se a data é válida.*********************
 
-Tem que haver uma verificação de se o cliente ja nao efetuou uma reserva nesse dia. Caso o tenha, devolve uma mensagem perguntando
-se deseja alterá-la. Essa alteração deve ser feita no mesmo dia. Lembrar de adicionar mesa antiga a lista de mesas disponiveis, e
-remover a nova dessa mesma.
+Tem que haver uma verificação de se o cliente ja nao efetuou uma reserva nesse dia. Caso o tenha, devolve uma mensagem perguntando se deseja alterá-la. Essa alteração deve ser feita no mesmo dia. Lembrar de adicionar mesa antiga a lista de mesas disponiveis, e remover a nova dessa mesma.
 
-Antes de adicionar a reserva, é necessario verificar se a mesa ainda se encontra disponível. Caso não, servidor envia nova lista de
-mesas disponiveis.
+*****************************Antes de adicionar a reserva, é necessario verificar se a mesa ainda se encontra disponível. Caso não, servidor envia nova lista de mesas disponiveis novamente.***********************************
 
+**************Se nao houver mais mesas disponiveis nesse dia, manda erro.********************
 
 Comandos a serem recebidos:
 
-1 servidor: CLI-NEW-NomeCliente-Ano-Mes-Dia
+1 servidor: CLI-NEW-<1>-NomeCliente-Ano-Mes-Dia
 1 cliente: 100+OK-1-2-3-4-5-6-...(todas as mesas disponiveis)
-2 servidor: CLI-NEW-Mesa-NomeCliente
+2 servidor: CLI-NEW-<2>-NomeCliente-Ano-Mes-Dia-Mesa
 2 cliente: 100+OK ou 400+ERR
 
 
@@ -79,9 +84,9 @@ Verificar se a reserva que ele escolheu deletar realmente é uma reserva que se 
 
 Comandos a serem recebidos:
 
-1 servidor: CLI-DEL-NomeCliente
+1 servidor: CLI-DEL-<1>-NomeCliente
 1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
-2 servidor: CLI-DEL-Ano-Mes-Dia
+2 servidor: CLI-DEL-<2>-NomeCliente-Ano-Mes-Dia
 2 cliente: 100+OK ou 400+ERR
 
 
@@ -104,7 +109,7 @@ Se ele nunca efetuou uma reserva, retorna mensagem de erro e encerra.
 
 Comandos a serem recebidos:
 
-1 servidor: CLI-LIST-NomeCliente
+1 servidor: CLI-LIST-<1>-NomeCliente
 1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
 
 
@@ -141,9 +146,32 @@ mesas disponiveis.
 
 Comandos a serem RECEBIDOS:
 
-1 servidor: CLI-ALT-NomeCliente
+1 servidor: CLI-ALT-<1>-NomeCliente
 1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
-2 servidor: CLI-ALT-NovoAno-NovoMes-NovoDia-AntigoAno-AntigoMes-AntigoDia
+2 servidor: CLI-ALT-<2>-NomeCliente-NovoAno-NovoMes-NovoDia-AntigoAno-AntigoMes-AntigoDia
 2 cliente: 100+OK-1-2-3-4-5-6-...(todas as mesas disponiveis)
-3 servidor: CLI-ALT-NumeroMesa
+3 servidor: CLI-ALT-<3>-NomeCliente-NovoAno-NovoMes-NovoDia-AntigoAno-AntigoMes-AntigoDia-NumeroMesa
 3 servidor: 100+OK ou 400+ERR
+
+Desconsidere:
+
+comando
+resposta
+
+alterar return do mesaEscolhida == QUIT
+
+lista sequencial de anos = ´[2022,2023,2024]
+
+2022 = GerenciadordeReservas()
+
+meses = ´[janeiro,fevereiro]
+
+janeiro = AVL dias
+
+dia = self.hasttable
+
+mesas = Key:nome cliente, mesa
+
+adicionar ID a hash table que representara o dia.
+
+G

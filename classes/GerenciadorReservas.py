@@ -160,30 +160,3 @@ if __name__ == '__main__':
     print('Amanda: ', splitAmanda)
     print()
     print('George: ', splitGeorge)
-
-    b = GerenciadorReservas(2023)
-    c = GerenciadorReservas(2023)
-
-    b.verificarMesasDisponiveis(2,1)
-    b.insereReserva(2,1,5,'fulano')
-    res = b.listarReservasMes(2,'fulano')
-    del b
-    del c
-    
-'''
-    for i in range(1, 13):
-        reservasCliente = a.listarReservas(i,'Ian Ribeiro de Mendonça')
-        reservasCliente2 = a.listarReservas(i,'Amanda')
-        reservasCliente3 = a.listarReservas(i,'George')
-
-        print('Reservas Ian Mes', str(i), ': ', reservasCliente)
-        print('Reservas Amanda Mes', str(i), ': ', reservasCliente2)
-        print('Reservas George Mes', str(i), ': ', reservasCliente3)
-
-    reservasAno = ''
-    for i in range(1, 13):
-        reservasAno += a.listarReservas(i, 'Amanda')
-
-    print('Reservas do ano inteiro de Amanda: ', reservasAno)
-'''
-
