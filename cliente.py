@@ -89,11 +89,9 @@ def validaData(data:str) -> bool:
         return True
 
     except ValueError as ve:
-        print(ve)
-        time.sleep(3)
-        return False
-
-
+        return ve
+        
+        
 
 # Prepara a data para ser enviado na forma de comando do protocolo.
 def comandoData(data:str) -> str:
@@ -143,6 +141,7 @@ def validaMesa(comando:str, resposta:list):
                 print('Informe uma mesa que se encontra na lista de mesas disponíveis.\n')
                 time.sleep(3)
 
+
         comando += f'-{mesaEscolhida}'
         comando = comando.replace('<1>', '<2>')
         resposta = enviarParaServidor(comando)
@@ -165,23 +164,8 @@ def validaMesa(comando:str, resposta:list):
 
 
 # Função a ser chamada caso o cliente queira efetuar uma nova reserva.
-def novaReserva(nomeCliente:str):
-    comando = f'CLI-NEW-<1>-{nomeCliente}-'
-    dataValida = False
 
-    while not dataValida:
-        data = input('\nInforme a data na qual deseja realizar a reserva no formato dia/mês/ano: ')
-        dataValida = validaData(data)
-
-    comando += comandoData(data)
-    resposta = enviarParaServidor(comando)
-
-    if resposta[0] == '200':
-        print('Infelizmente não há mais mesas disponíveis nesse dia.\n')
-        time.sleep(3)
-        return
-
-    validaMesa(comando, resposta)
+    
     
     
 
@@ -217,7 +201,31 @@ while option != 's':
 
     # Nova reserva
     if option == 'n': 
-        novaReserva(nomeCliente)
+        comando = f'CLI-NEW-<1>-{nomeCliente}-'
+        dataValida = False
+
+        while not dataValida:
+            data = input('\nInforme a data na qual deseja realizar a reserva no formato dia/mês/ano: ')
+            dataValida = validaData(data)
+
+            if type(dataValida) != bool:
+                print(dataValida)
+                dataValida = False
+                time.sleep(3)
+
+
+        comando += comandoData(data)
+        resposta = enviarParaServidor(comando)
+        
+        status = resposta[0]
+
+        if status == '200':
+            print('Infelizmente não há mais mesas disponíveis nesse dia.\n')
+            time.sleep(3)
+
+            
+        if status == '100':
+            validaMesa(comando, resposta)
 
         
 

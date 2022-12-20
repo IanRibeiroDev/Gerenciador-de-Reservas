@@ -54,9 +54,12 @@ Tem que haver uma verificação de se o cliente ja nao efetuou uma reserva nesse
 Comandos a serem recebidos:
 
 1 servidor: CLI-NEW-<1>-NomeCliente-Ano-Mes-Dia
-1 cliente: 100+OK-1-2-3-4-5-6-...(todas as mesas disponiveis)
+1 cliente: 100-OK-2-3-4-5-6-...(todas as mesas disponiveis) --> [100,ok,2,3,4,5]
+
+201-ERR-MesaTomada-1-2-3-4-5
+
 2 servidor: CLI-NEW-<2>-NomeCliente-Ano-Mes-Dia-Mesa
-2 cliente: 100+OK ou 400+ERR
+2 cliente: 100-OK ou 400+ERR
 
 
 2 - Excluir reserva
@@ -110,10 +113,33 @@ Se ele nunca efetuou uma reserva, retorna mensagem de erro e encerra.
 Comandos a serem recebidos:
 
 1 servidor: CLI-LIST-<1>-NomeCliente
-1 cliente: 100+OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva
+1 cliente: 100-OK-2023:2:4:29-2023...(ANO:MES:DIA:MESA-) ou 400+ERR se ele nunca tiver efetuado uma reserva --> [100, ok, 2023:2:4:29, 2023:2:5:16]
 
 
-4 - Alterar reserva efetuada.
+
+FACILITANDO VIDA DE GEORGE:
+
+reservas = 'Reserva: '
+
+for i in range(2, len(resposta)):
+            dados = resposta[i].split(':') --> [2023, 2, 4, 29]
+
+            dia = dados[2]
+            mes = dados[1]
+            ano = dados[0]
+            mesa = dados[3]
+
+            reservas += f'(Data: {dia}/{mes}/{ano} Mesa Reservada: {mesa})'
+
+            return mensagem
+
+            print('As reservas q vc efetuou foram: ')
+            print('reservas')
+
+
+
+
+4 - Alterar reserva efetuada. --> (CANCELADO)
 
 Lógica de alterar reserva:
 
