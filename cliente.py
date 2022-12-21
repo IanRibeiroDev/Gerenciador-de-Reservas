@@ -31,6 +31,10 @@ def validaData(data:str) -> bool:
         if len(data) != 3:
             raise ValueError('Formato inválido, lembre-se de inserir a data no formato dia/mês/ano. Ex: 05/12/2023')
             
+        for i in range(len(data)):
+            if not data[i].isdecimal():
+                raise ValueError('Informe a data com números, não letras.')
+
         dia = int(data[0])
         mes = int(data[1])
         ano = int(data[2])
@@ -175,8 +179,7 @@ while not nomeValido:
     nomeCliente = input('Informe seu nome: ')
     nomeValido = validaNomeCliente(nomeCliente)
 
-    print(type(nomeValido))
-    if nomeValido == str:
+    if type(nomeValido) != bool:
         print(nomeValido)
         nomeValido = False
         time.sleep(3)
@@ -188,11 +191,13 @@ while not cpfValido:
     cpfCliente = input('Informe seu cpf: ')
     cpfValido = validaCPF(cpfCliente)
 
-    if cpfValido != bool:
+    if type(cpfValido) != bool:
         print(cpfValido)
         cpfValido = False
         time.sleep(3)
 
+print(f'Seja bem-vindo {nomeCliente}!\n')
+time.sleep(3)
 
 # Menu de opções.
 while option != 's':
@@ -209,7 +214,7 @@ while option != 's':
 
     # Nova reserva
     if option == 'n': 
-        comando = f'CLI-NEW-<1>-{nomeCliente}:{cpfCliente}'
+        comando = f'CLI-NEW-<1>-{nomeCliente}:{cpfCliente}-'
         
         # Aqui pede para o cliente informar a data da reserva até que seja inserido uma data válida.
         dataValida = False
@@ -237,6 +242,7 @@ while option != 's':
 
         # Primeira tentativa de efetuar reserva em uma mesa específica.
         primeiraTentativa = True
+        desistiu = False
         while True:
             indice = 2
 
@@ -268,7 +274,7 @@ while option != 's':
                 mesaInvalida = validaMesa(mesaEscolhida, resposta, primeiraTentativa)
 
                 # Caso o cliente tenha escolhido uma mesa inválida, mesnagem de erro é imprimida na tela, e reinicia-se o processo. 
-                if mesaInvalida != bool:
+                if type(mesaInvalida) != bool:
                     print(mesaInvalida)
                     mesaInvalida = True
                     time.sleep(3)
@@ -277,6 +283,7 @@ while option != 's':
 
             # Caso o cliente tenha desistido da reserva, encerra o algoritmo e volta para o menu de opções.
             if desistiu:
+                desistiu = False
                 break
 
             # Codifica o comando de acordo com o protocolo e o manda para o servidor.
@@ -288,14 +295,14 @@ while option != 's':
 
 
             # Caso tenha dado tudo certo.
-            if resposta[0] == '100':
+            if status == '100':
                 print('Reserva inserida com sucesso!\n')
                 time.sleep(3)
                 break
 
             # Caso o cliente tenha demorado demais e, quando o servidor foi tentar efetuar a reserva, já não havia mais mesas disponíveis
             # naquele dia.
-            elif resposta[0] == '200':
+            elif status == '200':
                 print('Infelizmente não há mais reservas disponíveis para esse dia.\n')
                 time.sleep(3)
                 break
@@ -306,7 +313,7 @@ while option != 's':
             
             # Como o padrão de mensagem do erro 201 é diferente do da mensagem de acerto, é necessário fazer algumas mudanças em como
             # o código irá tratar o protocolo, para isso informamos ao programa que houve essa mudança com o primeiraTentativa = False.
-            elif resposta[0] == '201':
+            elif status == '201':
                 print('Infelizmente, outro cliente foi mais veloz, e efetou uma reserva nessa mesa enquanto você se decidia. Por favor escolha outra mesa para reservar. Você também pode digitar QUIT para cancelar a reserva.\n')
                 time.sleep(7)
                 primeiraTentativa = False

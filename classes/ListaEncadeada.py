@@ -220,7 +220,7 @@ class ListaEncadeada:
 
         return listaConcatenada
 
-
+    # Retorna todo conteúdo da lista já formatado de acordo com o protocolo de aplicação.
     def stringify(self) -> str:
         listaStr = ''
 

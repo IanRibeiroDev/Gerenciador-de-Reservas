@@ -3,6 +3,19 @@ from classes.ListaEncadeada import ListaEncadeada
 from classes.ArvoreAVL import AVLTree
 from classes.ChainingHashTable import ChainingHashTable, AbsentKeyException
 
+'''
+Cada indice de self.__meses aponta para a AVL de dias daquele mês.
+O valor dos nodes dessas AVLs são Hash Tables que armazenam pares (chave:valor) de (NomeCliente+cpfCliente:MesaReservada)
+
+Na HashTable também é armazenada uma Lista Encadeada contendo todas as mesas disponíveis daquele dia específico.
+Toda vez que uma reserva é feita ou removida, a mesa é inserida de volta ou removida da lista de mesas disponíveis.
+
+Na HashTable também é armazenado o valor do dia que ela está representando, o qual é utilizado nos métodos de comparação:
+__eq__, __lt__ e __gt__ para comparar esta com outras Hash Tables que também estão representando dias.
+
+Caso alguma das Hash Tables não possua esse valor inserido, o método de comparação default é comparar os seus tamanhos.
+'''
+
 class GerenciadorReservas:
     def __init__(self, ano:int):
         self.__ano = ano
@@ -14,7 +27,7 @@ class GerenciadorReservas:
             self.__meses.inserir(i, dias)
 
 
-
+    # Recupera a lista de mesas disponiveis de um dia específico.
     def verificarMesasDisponiveis(self, mes:int, dia:int):
         # Recupera a AVL de dias e acessa a HashTable contida nela. 
         arvoreDias = self.__meses.elemento(mes)
@@ -52,11 +65,12 @@ class GerenciadorReservas:
 
 
 
-    def insereReserva(self, mes:int, dia:int, mesa:int, nomeCliente:str):
+    # Método para inserção de reservas na Hash Table.
+    def insereReserva(self, mes:int, dia:int, mesa:int, cliente:str):
         # Recupera a AVL de dias e acessa a HashTable contida nela, depois insere a reserva do cliente na HashTable.
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
-        hashTableReservas.put(nomeCliente, mesa)
+        hashTableReservas.put(cliente, mesa)
         
         # Remove a mesa que acabou de ser reservada da lista de mesas disponíveis.
         listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')    
@@ -66,7 +80,7 @@ class GerenciadorReservas:
 
 
     # Lista todas as reservas que o cliente fez no mês.
-    def listarReservasMes(self, mes:int, nomeCliente:str, suffix:bool = False):
+    def listarReservasMes(self, mes:int, cliente:str, suffix:bool = False):
         arvoreDias = self.__meses.elemento(mes)
 
         # Recebe uma string com todos os dias já inseridos na AVL.
@@ -75,6 +89,7 @@ class GerenciadorReservas:
         ponteiro = 0
         reservasCliente = ''
 
+        # Procura reservas feitas pelo cliente em cada dia.
         while ponteiro < len(diasInseridos):
             # Caso seja um dia de 2 dígitos.
             if diasInseridos[ponteiro + 1] != ' ':
@@ -88,8 +103,9 @@ class GerenciadorReservas:
                 hashTableReservas = arvoreDias.getNodeValue(dia)
                 ponteiro += 2
 
+            # Tenta pegar a reserva e adicionála a string, caso falha, simplesmente continua.
             try:
-                mesa = hashTableReservas.get(nomeCliente)
+                mesa = hashTableReservas.get(cliente)
                 reservasCliente += f'{self.__ano}:{mes}:{dia}:{mesa}-'
             except AbsentKeyException:
                 continue
@@ -101,21 +117,21 @@ class GerenciadorReservas:
 
 
     # Lista todas as reservas que o cliente fez no ano.
-    def listarReservasAno(self, nomeCliente:str):
+    def listarReservasAno(self, cliente:str):
         reservasCliente = ''
 
         for i in range(1, 13):
-            reservasCliente += self.listarReservasMes(i, nomeCliente, True)
+            reservasCliente += self.listarReservasMes(i, cliente, True)
 
         return reservasCliente.removesuffix('-')
 
 
-    def removeReserva(self, mes:int, dia:int, nomeCliente:str):
+    def removeReserva(self, mes:int, dia:int, cliente:str):
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
 
         try:
-            entry = hashTableReservas.remove(nomeCliente)
+            entry = hashTableReservas.remove(cliente)
         except AbsentKeyException:
             return '400+ERR'
 

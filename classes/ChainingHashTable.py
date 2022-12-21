@@ -140,6 +140,8 @@ class ChainingHashTable:
 
 
     # Metodos implementados pelos alunos.
+    # Os métodos de comparação vão tentar comparar as Hash Tables pelo valor do dia que elas representam. 
+    # Caso esse valor não esteja na Hash Table, o default será utilizar o tamanho da Hash Table pra comparação, tanto com outras Hash Tables, como com inteiros e floats. 
     def __eq__(self, outro) -> bool:
         if type(outro) == ChainingHashTable:
             try:
