@@ -201,3 +201,20 @@ mesas = Key:nome cliente, mesa
 adicionar ID a hash table que representara o dia.
 
 G
+
+Resolução HashTable:
+
+
+Deixa a avl normal.
+
+Coloca o dia na propria hash table. chave = 'dia representado'
+
+Faz os metodos de comparacao da hash table utilizarem o dia armazenado na hash table pra comparar.
+
+Remover métodos desnecessários das EDs.
+
+
+***********parei aqui*********
+
+Comentar todo o código.
+

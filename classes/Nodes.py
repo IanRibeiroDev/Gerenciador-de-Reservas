@@ -1,5 +1,3 @@
-from classes.ChainingHashTable import ChainingHashTable
-
 class NodeLista:
     def __init__(self, carga:any):
         self.carga = carga
@@ -14,8 +12,5 @@ class NodeArvore():
         self.right = None
         self.height = 1 # atributo que especifica a altura que determina o fator de balanco do nó
     
-    def addHashTable(self, size = 30):
-        self.hashTable = ChainingHashTable(size)
-
     def __str__(self):
         return f'|{self.value}:h={self.height}|'

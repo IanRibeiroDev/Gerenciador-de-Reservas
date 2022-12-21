@@ -36,7 +36,7 @@ def handleClient(client_msg, client_address):
     msg = client_msg.decode().split('-')
 
     if msg[2] == '<1>':
-        print(f'Cliente {msg[3]} requisitou: {operacoes.get(msg[1])}.')
+        print(f'Cliente {msg[3]} requisitou: {operacoes.get(msg[1])}.\n')
 
     resposta = gerenciador.handleMsg(msg)
     sock.sendto(resposta.encode(), client_address)
@@ -46,6 +46,6 @@ while True:
     client_msg, client_address = sock.recvfrom(4096)
 
     # Troca de mensagens acontece através de threads:
-    client_thread = threading.Thread(target=handleClient, args=(client_msg, client_address))
-    client_thread.start()
-    #handleClient(client_msg, client_address)
+    #client_thread = threading.Thread(target=handleClient, args=(client_msg, client_address))
+    #client_thread.start()
+    handleClient(client_msg, client_address)

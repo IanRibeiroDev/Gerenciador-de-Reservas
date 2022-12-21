@@ -265,9 +265,8 @@ class AVLTree(object):
 
 
     # Daqui pra baixo são métodos implementados pelos alunos.
-    
     # Método que retorna o node cujo value corresponde a chave passada como parâmetro.
-    def __getNode(self, node:NodeArvore, chave:int):
+    def __getNode(self, node:NodeArvore, chave:int) -> NodeArvore:
         if node == None:
             return
 
@@ -281,56 +280,34 @@ class AVLTree(object):
             return self.__getNode(node.right, chave)    
 
 
-    # Método que adiciona uma instância de ChainingHashTable ao node.
-    def addHashNode(self, value, size = 30):
-        node = self.__getNode(self.__root, value)
-        node.addHashTable(size)
-
-    # Método que adiciona um novo node à árvore que já contem uma instância de ChainingHashTable.
-    def insertHashNode(self, value, size = 30):
-        newNode = NodeArvore(value)
-        newNode.addHashTable(size)
-        
-        if(self.__root == None):
-            self.__root = newNode
-
-        else:
-            self.__root = self.__insert(self.__root, value, newNode)
     
-    # Método que retorna a ChainingHashTable de um node.
-    def getHashNode(self, value):
+    # Método que retorna a carga do node. No caso desse trabalho, a carga será uma ChainingHashTable.
+    def getNodeValue(self, value):
         node = self.__getNode(self.__root, value)
 
         if node != None:
-            return node.hashTable
-
-    # Método em ordem da árvore, servirá como um print para saber que dias já foram inseridos.
-    # Caso imprimir seja False, ele retornará uma string com todos os nós em ordem, ao invés de printar no console.
-    def emOrdem(self, imprimir = True):
-        if not imprimir:
-            buffer = StringIO()
-            sys.stdout = buffer
-
-        self.__emOrdem(self.__root, imprimir)
-
-        if not imprimir:
-            stringNodes = buffer.getvalue()
-            sys.stdout = sys.__stdout__
-
-            return stringNodes
+            return node.value
 
 
-    def __emOrdem(self, node, imprimir, nivel = 0):
+
+    # Método em ordem da árvore. Os prints ao invés de irem para o console, são redirecionados para o buffer, para serem
+    # retornados como uma string.
+    def emOrdem(self):
+        buffer = StringIO()
+        sys.stdout = buffer
+
+        self.__emOrdem(self.__root)
+
+        stringNodes = buffer.getvalue()
+        sys.stdout = sys.__stdout__
+
+        return stringNodes
+
+
+    def __emOrdem(self, node):
         if node == None: 
             return
   
-        self.__emOrdem(node.left, imprimir, nivel + 1)  
+        self.__emOrdem(node.left)  
         print(f'{node.value} ', end="")
-        self.__emOrdem(node.right, imprimir, nivel + 1) 
-
-        if nivel == 0 and imprimir:
-            print()
-
-
-    def __str__(self):
-        return self.emOrdem(False)
+        self.__emOrdem(node.right) 

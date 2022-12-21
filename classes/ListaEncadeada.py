@@ -1,3 +1,23 @@
+'''
+Olá, Ian falando aqui!
+
+Essa classe foi adicionada ao projeto há um mês atrás, pouco depois dos requisitos do mesmo serem anunciados.
+
+Eu não tinha etendido que iríamos poder utilizar as classes de estruturas de dados implementadas pelo professor em aula.
+
+Então como estávamos planejando utilizar lista encadeada no projeto, para adiantar, implementei esse código do início ao fim
+quando criei o repositório.
+
+Os métodos que acabaram sendo utilizados foram os:
+
+insereInicio() --> Linha 151
+insereFim() --> Linha 174
+stringify() --> Linha 222
+busca() --> Linha 64
+remover() --> Linha 126
+'''
+
+
 from classes.Nodes import NodeLista
 
 class ListaEncadeadaException(Exception):

@@ -137,3 +137,69 @@ class ChainingHashTable:
                 print(f'[ {entry.key},{entry.value} ] ',end='')
             print()
     
+
+
+    # Metodos implementados pelos alunos.
+    def __eq__(self, outro) -> bool:
+        if type(outro) == ChainingHashTable:
+            try:
+                dia = self.get('dia representado')
+                diaOutro = outro.get('dia representado')
+
+                return dia == diaOutro
+
+            except AbsentKeyException:
+                return self.size == outro.size
+
+        elif type(outro) == int or float:
+            try:
+                dia = self.get('dia representado')
+
+                return dia == outro
+
+            except AbsentKeyException:
+                return self.size == outro
+
+
+
+    def __lt__(self, outro) -> bool:
+        if type(outro) == ChainingHashTable:
+            try:
+                dia = self.get('dia representado')
+                diaOutro = outro.get('dia representado')
+
+                return dia < diaOutro
+
+            except AbsentKeyException:
+                return self.size < outro.size
+
+        elif type(outro) == int or float:
+            try:
+                dia = self.get('dia representado')
+
+                return dia < outro
+
+            except AbsentKeyException:
+                return self.size < outro
+
+
+    def __gt__(self, outro) -> bool:
+        if type(outro) == ChainingHashTable:
+            try:
+                dia = self.get('dia representado')
+                diaOutro = outro.get('dia representado')
+
+                return dia > diaOutro
+
+            except AbsentKeyException:
+                return self.size > outro.size
+
+        elif type(outro) == int or float:
+            try:
+                dia = self.get('dia representado')
+
+                return dia > outro
+
+            except AbsentKeyException:
+                return self.size > outro
+        

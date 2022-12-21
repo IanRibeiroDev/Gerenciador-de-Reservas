@@ -1,3 +1,4 @@
+from classes.ChainingHashTable import ChainingHashTable
 import socket
 
 '''
@@ -19,17 +20,22 @@ if a[2]:
 if a[10]:
     print('eita')
 '''
-msg = ['LIST']
 
+a = 10
+b = 10.5
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('localhost', 60000)
+print(type(a))
+print(type(b))
 
-for i in range(len(msg)):
-    comando = f'CLI-{msg[i]}-<1>-Ian-2023-2-1'
+if type(a) == int or float:
+    print('a entrou')
 
-    sock.sendto(comando.encode(), server_address)
+if type(b) == int or float:
+    print('b entrou')
 
-    resposta, address = sock.recvfrom(1024)
-        
-    print(resposta.decode())
+while True:
+    while True:
+        break
+
+    print('paciencia')
+    break
