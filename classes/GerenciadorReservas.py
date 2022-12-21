@@ -70,12 +70,21 @@ class GerenciadorReservas:
         # Recupera a AVL de dias e acessa a HashTable contida nela, depois insere a reserva do cliente na HashTable.
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
-        hashTableReservas.put(cliente, mesa)
-        
-        # Remove a mesa que acabou de ser reservada da lista de mesas disponíveis.
-        listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')    
-        posicao = listaDisponiveis.busca(mesa)
-        listaDisponiveis.remover(posicao)
+
+        # Se o cliente já tem uma reserva, náo permite reservar novamente. Ele deve deletar a reserva antes.
+        try:
+            hashTableReservas.get(cliente)
+            return '203-ERR-AlreadyHasReservation'
+
+        # Caso náo tenha reserva no dia ainda, insere reserva.
+        except AbsentKeyException:
+            hashTableReservas.put(cliente, mesa)
+            
+            # Remove a mesa que acabou de ser reservada da lista de mesas disponíveis.
+            listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')    
+            posicao = listaDisponiveis.busca(mesa)
+            listaDisponiveis.remover(posicao)
+            return '100-OK-InsertSucess'
 
 
 
@@ -84,7 +93,7 @@ class GerenciadorReservas:
         arvoreDias = self.__meses.elemento(mes)
 
         # Recebe uma string com todos os dias já inseridos na AVL.
-        diasInseridos = arvoreDias.emOrdem() 
+        diasInseridos = arvoreDias.stringDias() 
         
         ponteiro = 0
         reservasCliente = ''
@@ -123,17 +132,14 @@ class GerenciadorReservas:
         for i in range(1, 13):
             reservasCliente += self.listarReservasMes(i, cliente, True)
 
-        return reservasCliente.removesuffix('-')
+        return reservasCliente
 
 
     def removeReserva(self, mes:int, dia:int, cliente:str):
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
 
-        try:
-            entry = hashTableReservas.remove(cliente)
-        except AbsentKeyException:
-            return '400+ERR'
+        entry = hashTableReservas.remove(cliente)
 
         listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')
         listaDisponiveis.insereInicio(entry.value)

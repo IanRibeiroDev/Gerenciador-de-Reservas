@@ -23,6 +23,8 @@ Status = {
     100 : OK
     200 : Nao tem mais mesas disponiveis nesse dia.
     201 : A mesa ja foi reservada por outro cliente.
+    202 : Não há reservas salvas no servidor efetuadas pelo cliente.
+    203 : Cliente já possui reserva nesse dia.
 }
 
 
@@ -45,7 +47,7 @@ Verificações necessárias:
 
 ***************Verificar se a data é válida.*********************
 
-Tem que haver uma verificação de se o cliente ja nao efetuou uma reserva nesse dia. Caso o tenha, devolve uma mensagem perguntando se deseja alterá-la. Essa alteração deve ser feita no mesmo dia. Lembrar de adicionar mesa antiga a lista de mesas disponiveis, e remover a nova dessa mesma.
+(cancelado)Tem que haver uma verificação de se o cliente ja nao efetuou uma reserva nesse dia. Caso o tenha, devolve uma mensagem perguntando se deseja alterá-la. Essa alteração deve ser feita no mesmo dia. Lembrar de adicionar mesa antiga a lista de mesas disponiveis, e remover a nova dessa mesma.
 
 *****************************Antes de adicionar a reserva, é necessario verificar se a mesa ainda se encontra disponível. Caso não, servidor envia nova lista de mesas disponiveis novamente.***********************************
 
@@ -66,11 +68,13 @@ Comandos a serem recebidos:
 
 Lógica para excluir reserva:
 
-
+****************
 Cliente manda mensagem dizendo que quer excluir reserva.
 
 Servidor recebe, executa listarReservasAno(NomeCliente) em cada ano da lista, devolve a lista de todas as reservas feitas pelo 
 cliente para ele.
+****************
+
 
 Cliente escolhe qual deseja deletar.
 
@@ -79,8 +83,10 @@ Servidor deleta reserva.
 
 Verificações necessárias:
 
-
+*********
 Se ele nunca efetuou uma reserva, retorna mensagem de erro e encerra.
+*********
+
 
 Verificar se a reserva que ele escolheu deletar realmente é uma reserva que se encontra na lista que ele recebeu.
 
@@ -181,40 +187,26 @@ Comandos a serem RECEBIDOS:
 
 Desconsidere:
 
-comando
-resposta
 
-alterar return do mesaEscolhida == QUIT
-
-lista sequencial de anos = ´[2022,2023,2024]
+lista sequencial de anos = [2022,2023,2024]
 
 2022 = GerenciadordeReservas()
 
-meses = ´[janeiro,fevereiro]
+meses = [janeiro,fevereiro]
 
 janeiro = AVL dias
 
-dia = self.hasttable
+dia = ChainingHashTable()
 
-mesas = Key:nome cliente, mesa
-
-adicionar ID a hash table que representara o dia.
-
-G
-
-Resolução HashTable:
+mesas = Key:nome cliente:cpf cliente, mesa
 
 
-Deixa a avl normal.
 
-Coloca o dia na propria hash table. chave = 'dia representado'
+2 protocolos a implementar
+2 semaforos a implementar
 
-Faz os metodos de comparacao da hash table utilizarem o dia armazenado na hash table pra comparar.
+bloqueia arvore quando for inserir novo no.
+bloqueia hash table quando for inserir ou remover reserva.
 
-Remover métodos desnecessários das EDs.
 
-
-***********parei aqui*********
-
-Comentar todo o código.
-
+verificar antes de inserir reserva se o cliente ja nao tem uma reserva nesse dia, caso tenha retorna erro

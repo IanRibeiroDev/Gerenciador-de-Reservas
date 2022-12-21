@@ -88,8 +88,31 @@ class GerenciadorClientes:
                 # Se alguem ja reservou nesse íterim.
                 resposta = f'201-ERR-NotAvailable-{mesasDisponiveis}'
                 return resposta
-            
+
+
+        elif msg[1] == 'LIST':
+            cliente = msg[3]
+
+            reservasEfetuadas = self.__verificarReservasEfetuadas(cliente)
+
+            if reservasEfetuadas == '':
+                return '202-ERR-NoReservations'
+
+            resposta = f'100-OK-{reservasEfetuadas}'
+            return resposta
                 
+
+        elif msg[1] == 'DEL':
+
+            ano = int(msg[4])
+            mes = int(msg[5])
+            dia = int(msg[6])
+            cliente = msg[3]
+
+            resposta = self.__deletarReserva(ano, mes, dia, cliente)
+            return resposta
+
+
     # Seleciona o gerenciador de reservas responsável pelo ano requisitado e pede para que retorne as mesas disponíveis.
     def __getMesasDisponiveis(self, ano:int, mes:int, dia:int):
             indiceAno = self.__indiceAnos.get(ano)
@@ -105,12 +128,34 @@ class GerenciadorClientes:
             return resposta
 
 
+
     # Seleciona o gerenciador de reservas responsável pelo ano requisitado e pede para que adicione uma reserva..
     def __adicionarReserva(self, ano:int, mes:int, dia:int, mesa:int, cliente:str):
         indiceAno = self.__indiceAnos.get(ano)
         gerenciadorReservas = self.__anos.elemento(indiceAno)
 
-        gerenciadorReservas.insereReserva(mes, dia, mesa ,cliente)
+        resposta = gerenciadorReservas.insereReserva(mes, dia, mesa ,cliente)
 
-        return '100-OK-InsertSucess'
+        return resposta
 
+
+
+    def __verificarReservasEfetuadas(self, cliente:str):
+
+        reservasEfetuadas = ''
+
+        for i in range(1, self.__anos.tamanho() + 1):
+            gerenciadorReservas = self.__anos.elemento(i)
+            reservasEfetuadas += gerenciadorReservas.listarReservasAno(cliente)
+
+        return reservasEfetuadas.removesuffix('-')
+        
+
+
+    def __deletarReserva(self, ano:int, mes:int, dia:int, cliente:str):
+        indiceAno = self.__indiceAnos.get(ano)
+        gerenciadorReservas = self.__anos.elemento(indiceAno)
+
+        gerenciadorReservas.removeReserva(mes, dia, cliente)
+
+        return '100-OK-Removed'

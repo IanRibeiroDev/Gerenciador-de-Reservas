@@ -290,13 +290,13 @@ class AVLTree(object):
 
 
 
-    # Método em ordem da árvore. Os prints ao invés de irem para o console, são redirecionados para o buffer, para serem
-    # retornados como uma string.
-    def emOrdem(self):
+    # Os prints ao invés de irem para o console, são redirecionados para o buffer, para serem retornados como uma string.
+    # Retorna uma string contendo todos os dias já inseridos.
+    def stringDias(self) -> str:
         buffer = StringIO()
         sys.stdout = buffer
 
-        self.__emOrdem(self.__root)
+        self.__stringDias(self.__root)
 
         stringNodes = buffer.getvalue()
         sys.stdout = sys.__stdout__
@@ -304,10 +304,13 @@ class AVLTree(object):
         return stringNodes
 
 
-    def __emOrdem(self, node):
+    def __stringDias(self, node):
         if node == None: 
             return
   
-        self.__emOrdem(node.left)  
-        print(f'{node.value} ', end="")
-        self.__emOrdem(node.right) 
+        self.__stringDias(node.left)  
+
+        dia = node.value.get('dia representado')
+        print(f'{dia} ', end="")
+
+        self.__stringDias(node.right) 

@@ -154,6 +154,48 @@ def validaMesa(mesaEscolhida:str, resposta:list, primeiraTentativa:bool) -> bool
         
     
 
+# Decodifica as reservas, deixando-as de forma legível para o cliente.
+def decodificaReservas(resposta:list) -> str:
+
+    reservas = '\n'
+    for i in range(2, len(resposta)):
+        dados = resposta[i].split(':')
+
+        dia = dados[2]
+        mes = dados[1]
+        ano = dados[0]
+        mesa = dados[3]
+
+        reservas += f'Data: {dia}/{mes}/{ano} --> Mesa Reservada: {mesa}\n'
+
+    return reservas
+
+
+
+def validaReservaDeletar(reservaDeletar:str, resposta:list):
+    reservaDeletar = reservaDeletar.split('/')
+
+    try:
+        
+        dia = int(reservaDeletar[0])
+        mes = int(reservaDeletar[1])
+        ano = reservaDeletar[2]
+        mesa = reservaDeletar[3]
+    except IndexError:
+        return 'Favor digitar uma reserva válida. Lembre-se do formato dia/mês/ano/mesa\n'
+
+    dia = str(dia)
+    mes = str(mes)
+
+    aux = f'{ano}:{mes}:{dia}:{mesa}'
+
+    if aux in resposta:
+        return False
+
+    return 'Favor digitar uma reserva válida. Lembre-se do formato dia/mês/ano/mesa\n'
+
+
+
 # Função para enviar o comando da requisição para o servidor. Devolve a resposta já decodificada e já feito o split.
 def enviarParaServidor(comando):
     sock.sendto(comando.encode(), server_address)
@@ -170,7 +212,8 @@ server_address = ('localhost', 60000)
 
 
 option = ''
-print('Bem-vindo ao Gerenciador de Reservas GAI!') # GAI = George Amanda Ian
+print('*****Gerenciador de Reservas GAIA*****') # GAIA = George Amanda IAn
+time.sleep(2)
 
 
 # Inserção do nome do cliente com verificações.
@@ -196,8 +239,10 @@ while not cpfValido:
         cpfValido = False
         time.sleep(3)
 
-print(f'Seja bem-vindo {nomeCliente}!\n')
-time.sleep(3)
+
+print(f'\nBem-vindo {nomeCliente}, vamos começar?\n')
+time.sleep(2)
+
 
 # Menu de opções.
 while option != 's':
@@ -317,3 +362,61 @@ while option != 's':
                 print('Infelizmente, outro cliente foi mais veloz, e efetou uma reserva nessa mesa enquanto você se decidia. Por favor escolha outra mesa para reservar. Você também pode digitar QUIT para cancelar a reserva.\n')
                 time.sleep(7)
                 primeiraTentativa = False
+
+            elif status == '203':
+                print('Você já possui outra reserva nesse dia. Caso deseje alterá-la, primeiro deverá deletá-la.\n')
+                time.sleep(3)
+                break
+            
+
+
+    # Listar reservas efetuadas pelo cliente.
+    elif option == 'l' or 'd':
+
+        # Prepara o comando e já envia a requisição da listagem para o servidor.
+        comando = f'CLI-LIST-<1>-{nomeCliente}:{cpfCliente}'
+        resposta = enviarParaServidor(comando)
+
+        status = resposta[0]
+
+        # Caso não haja reserva alguma do cliente no servidor.
+        if status == '202':
+            if option == 'l':
+                print(f'\nNão há reserva sua no servidor, aguardamos ansiosamente pela primeira {nomeCliente}!\n')
+
+            else:
+                print('\nNão há reserva sua no servidor, logo não há o que deletar.\n')
+                
+            time.sleep(3)
+            continue
+        
+        # Decodifica as reservas, e mostra para o lciente todas as reservas que efetuou até o momento.
+        reservasEfetuadas = decodificaReservas(resposta)
+        print('\n', reservasEfetuadas, '\n')
+
+        if option == 'l':
+            print('Essas são todas as suas reservas efetuadas até o momento.')
+            input('Para voltar ao menu, digite ENTER.\n')
+
+        else:
+            reservaDeletarInvalida = True
+            while reservaDeletarInvalida:
+                reservaDeletar = input('Digite a data da reserva a qual deseja deletar, no formato dia/mês/ano/mesa: ')
+                
+                reservaDeletarInvalida = validaReservaDeletar(reservaDeletar, resposta)
+
+                if type(reservaDeletarInvalida) != bool:
+                    print(reservaDeletarInvalida)
+                    reservaDeletarInvalida = True
+                    time.sleep(3)
+
+            comando = f'CLI-DEL-<1>-{nomeCliente}:{cpfCliente}-'
+            comando += comandoData(reservaDeletar)
+
+            resposta = enviarParaServidor(comando)
+
+            status = resposta[0]
+
+            if status == '100':
+                print('Reserva removida com sucesso.\n')
+                time.sleep(3)
