@@ -79,7 +79,7 @@ class GerenciadorClientes:
                 # refém do cliente até que este mandasse sua resposta.
 
                 # A verificação se a mesa ainda está disponível é repetida, para garantir que a mesa já não foi reservada enquanto o cliente se decidia.
-                self.__mutex.aquire()
+                self.__mutex.acquire()
                 mesasDisponiveis = self.__getMesasDisponiveis(ano, mes, dia).removeprefix('100-OK-')
 
 

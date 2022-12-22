@@ -182,7 +182,7 @@ def validaReservaDeletar(reservaDeletar:str, resposta:list):
         mes = int(reservaDeletar[1])
         ano = reservaDeletar[2]
         mesa = reservaDeletar[3]
-    except IndexError:
+    except Exception:
         return 'Favor digitar uma reserva válida. Lembre-se do formato dia/mês/ano/mesa\n'
 
     dia = str(dia)
@@ -426,3 +426,7 @@ while option != 's':
             if status == '100':
                 print('Reserva removida com sucesso.\n')
                 time.sleep(3)
+
+    elif option == 's':
+        print(f'Até a próxima {nomeCliente}!\n')
+        

@@ -26,7 +26,7 @@ porta = 60000
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 sock.bind((host, porta))
 
-print(f'Servidor {host} online na porta {porta}')
+print(f'Servidor online na porta {porta}')
 
 
 def handleClient(client_msg, client_address):
@@ -34,10 +34,12 @@ def handleClient(client_msg, client_address):
     msg = client_msg.decode().split('-')
     nomeCliente = msg[3].split(':')[0]
 
-    if msg[2] == '<1>':
-        print(f'Cliente {nomeCliente} requisitou: {operacoes.get(msg[1])}.\n')
+    print(f'Cliente {nomeCliente} requisitou: {operacoes.get(msg[1])}.')
 
     resposta = gerenciador.handleMsg(msg)
+
+    print(f'Respondendo cliente {nomeCliente}.\n')
+
     sock.sendto(resposta.encode(), client_address)
 
 

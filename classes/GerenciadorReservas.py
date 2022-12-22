@@ -107,6 +107,7 @@ class GerenciadorReservas:
 
     # Lista todas as reservas que o cliente fez no mês.
     def listarReservasMes(self, mes:int, cliente:str, suffix:bool = False):
+        self.__mutex.acquire()
         arvoreDias = self.__meses.elemento(mes)
 
         # Recebe uma string com todos os dias já inseridos na AVL.
@@ -137,8 +138,10 @@ class GerenciadorReservas:
                 continue
 
         if not suffix:
+            self.__mutex.release()
             return reservasCliente.removesuffix('-')
 
+        self.__mutex.release()
         return reservasCliente
 
 
