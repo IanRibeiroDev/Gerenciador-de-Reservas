@@ -1,4 +1,4 @@
-# Documentação  - Sistema de reservas GAIA (Versão Beta 1.0)
+# Documentação  - Sistema de reservas GAIA (Versão Beta 1.0) #
 
 ___**Equipe:**___ Amanda Cruz de Araújo, George Lima e Ian Ribeiro.
 
