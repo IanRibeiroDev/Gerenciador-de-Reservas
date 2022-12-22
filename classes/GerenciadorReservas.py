@@ -21,11 +21,7 @@ class GerenciadorReservas:
     def __init__(self, ano:int):
         self.__ano = ano
         self.__meses = ListaSequencial()
-        self.__mutexAVL = Semaphore()
-        self.__mutexHashTable = Semaphore()
-
-        # release é o up
-        # aquire é o down
+        self.__mutex = Semaphore()
 
         # Cria uma AVL de dias para cada mês.
         for i in range(1, 13):
@@ -36,21 +32,25 @@ class GerenciadorReservas:
     # Recupera a lista de mesas disponiveis de um dia específico.
     def verificarMesasDisponiveis(self, mes:int, dia:int):
         # Recupera a AVL de dias e acessa a HashTable contida nela.  
+        self.__mutex.acquire()
+
         arvoreDias = self.__meses.elemento(mes)
-        self.__mutexAVL.acquire()
         hashTableReservas = arvoreDias.getNodeValue(dia)
         
+
         # Se o node do dia ainda não tiver sido criado, o cria, e acessa sua HashTable.
         if hashTableReservas == None:
             self.__addDia(arvoreDias, dia)
             hashTableReservas = arvoreDias.getNodeValue(dia)
 
+
         # Acessa a lista de mesas disponíveis e retorna todo o conteúdo dela já formatada para ser enviada pelo protocolo.
-        
-        
-        self.__mutexAVL.release()
         listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')
-        return listaDisponiveis.stringify()
+        protocoloMesasDisponiveis = listaDisponiveis.stringify()
+
+        self.__mutex.release()
+        return protocoloMesasDisponiveis
+
 
 
 
@@ -76,18 +76,19 @@ class GerenciadorReservas:
 
 
 
-    # Cliente 2/2/2023 mesa 10
-    # Cliente 2/2/2023 mesa 10
-
     # Método para inserção de reservas na Hash Table.
     def insereReserva(self, mes:int, dia:int, mesa:int, cliente:str):
         # Recupera a AVL de dias e acessa a HashTable contida nela, depois insere a reserva do cliente na HashTable.
+        self.__mutex.acquire()
+
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
 
         # Se o cliente já tem uma reserva, náo permite reservar novamente. Ele deve deletar a reserva antes.
         try:
             hashTableReservas.get(cliente)
+
+            self.__mutex.release()
             return '203-ERR-AlreadyHasReservation'
 
         # Caso náo tenha reserva no dia ainda, insere reserva.
@@ -98,6 +99,8 @@ class GerenciadorReservas:
             listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')    
             posicao = listaDisponiveis.busca(mesa)
             listaDisponiveis.remover(posicao)
+
+            self.__mutex.release()
             return '100-OK-InsertSucess'
 
 
@@ -150,18 +153,22 @@ class GerenciadorReservas:
 
 
     def removeReserva(self, mes:int, dia:int, cliente:str):
+        self.__mutex.acquire()
+
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
 
-        self.__mutexHashTable.acquire()
+        
         entry = hashTableReservas.remove(cliente)
 
         listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')
         listaDisponiveis.insereInicio(entry.value)
-        self.__mutexHashTable.release()
+
+        self.__mutex.release()
+        
 
 
-# Fiquem a vontade para usar esses exemplos para entender melhor como a estrtura de dados funciona.
+# Fiquem a vontade para usar esses exemplos para entender melhor como a estrutura de dados funciona.
 # Lembrar de remover o "classes." dos imports, se não, acontece um erro. Nunca conseguimos descobrir o porquê.
 if __name__ == '__main__':
 

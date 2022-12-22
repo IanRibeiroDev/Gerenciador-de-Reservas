@@ -1,5 +1,4 @@
 from classes.ListaSequencial import ListaSequencial
-from classes.ListaEncadeada import ListaEncadeada
 from classes.ChainingHashTable import ChainingHashTable
 from classes.GerenciadorReservas import GerenciadorReservas
 import datetime
@@ -14,9 +13,9 @@ Basicamente:
 self.__anos = [2022, 2023, 2024] --> Onde 2022 = objeto GerenciadorReservas() de 2022
 
 self.__indiceAnos = {
-    2022:0,
-    2023:1,
-    2024:2
+    2022:1,
+    2023:2,
+    2024:3
 }  -----------> A chave ano leva para qual indice de self.__anos aquele ano está armazenado. Ex: 2022 se encontra em self.__anos[0].
 '''
 

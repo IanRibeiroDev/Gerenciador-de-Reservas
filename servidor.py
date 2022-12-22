@@ -44,10 +44,11 @@ def handleClient(client_msg, client_address):
 while True:
     client_msg, client_address = sock.recvfrom(4096)
 
-    
-    # Para usar o debugger para acompanhar o código:
-    # Comente as linhas 54 e 55.
-    # Descomente a linha 56 e adicione um breakpoint nela.
+    # Para rodar o servidor no formato monothread, comente as linhas 53 e 54, e descomente a 55.
+
+    # Para rodar o servidor no formato multithread, comente a linha 55, e descomente as 53 e 54.
+
+    # Para usar o debugger para acompanhar o código, rode o servidor no formato monothread, e coloque um breakpoint na linha 55.
 
     client_thread = threading.Thread(target=handleClient, args=(client_msg, client_address))
     client_thread.start()
