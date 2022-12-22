@@ -9,7 +9,6 @@ operacoes = ChainingHashTable(4)
 operacoes.put('NEW', 'efetuar nova reserva')
 operacoes.put('DEL', 'deletar reserva efetuada')
 operacoes.put('LIST', 'lista de reservas efetuadas')
-operacoes.put('ALT', 'alterar reserva efetuada')
 
 '''
 O que a Hash Table operacoes esta representando:
@@ -18,11 +17,10 @@ operacoes = {
     'NEW':'efetuar nova reserva',
     'DEL':'deletar reserva efetuada',
     'LIST':'lista de reservas efetuadas',
-    'ALT':'alterar reserva  efetuada'
 }
 '''
 
-host = 'localhost'
+host = '0.0.0.0'
 porta = 60000
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -51,6 +49,6 @@ while True:
     # Comente as linhas 54 e 55.
     # Descomente a linha 56 e adicione um breakpoint nela.
 
-    #client_thread = threading.Thread(target=handleClient, args=(client_msg, client_address))
-    #client_thread.start()
-    handleClient(client_msg, client_address)
+    client_thread = threading.Thread(target=handleClient, args=(client_msg, client_address))
+    client_thread.start()
+    #handleClient(client_msg, client_address)

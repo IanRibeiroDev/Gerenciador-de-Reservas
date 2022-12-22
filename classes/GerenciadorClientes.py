@@ -3,6 +3,7 @@ from classes.ListaEncadeada import ListaEncadeada
 from classes.ChainingHashTable import ChainingHashTable
 from classes.GerenciadorReservas import GerenciadorReservas
 import datetime
+from threading import Semaphore
 
 '''
 Cada indice de self.__anos aponta para o gerenciador de reservas daquele ano.
@@ -23,6 +24,8 @@ class GerenciadorClientes:
     def __init__(self) -> None:
         self.__anos = ListaSequencial()
         self.__indiceAnos = ChainingHashTable(3)
+        self.__mutex = Semaphore()
+
         self.__inserirAnos()
         
 
@@ -72,21 +75,30 @@ class GerenciadorClientes:
                 cliente = msg[3]
 
                 # Verifica se a mesa escolhida ainda se encontra disponível.
+
+                # Decidimos implementar o semáforo a partir daqui, pois se tivesse sido implementado na parte 1 (<1>), o servidor ficaria
+                # refém do cliente até que este mandasse sua resposta.
+
+                # A verificação se a mesa ainda está disponível é repetida, para garantir que a mesa já não foi reservada enquanto o cliente se decidia.
+                self.__mutex.aquire()
                 mesasDisponiveis = self.__getMesasDisponiveis(ano, mes, dia).removeprefix('100-OK-')
 
 
                 # Se a mesa ainda está disponível, adiciona a reserva.
                 if str(mesa) in mesasDisponiveis.split('-'):
                     resposta = self.__adicionarReserva(ano, mes, dia, mesa, cliente)
+                    self.__mutex.release()
                     return resposta
                 
                 # Se acabaram as mesas nesse íterim.
                 elif mesasDisponiveis.split('-')[0] == '200':
                     resposta = mesasDisponiveis
+                    self.__mutex.release()
                     return resposta
 
-                # Se alguem ja reservou nesse íterim.
+                # Se alguem já reservou nesse íterim.
                 resposta = f'201-ERR-NotAvailable-{mesasDisponiveis}'
+                self.__mutex.release()
                 return resposta
 
 

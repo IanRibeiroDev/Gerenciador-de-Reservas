@@ -1,5 +1,6 @@
 from classes.ChainingHashTable import ChainingHashTable
 import socket
+from threading import Semaphore
 
 '''
 def funcaoPrint():
@@ -20,7 +21,7 @@ if a[2]:
 if a[10]:
     print('eita')
 '''
-
+'''
 a = 10
 b = 10.5
 
@@ -39,3 +40,15 @@ while True:
 
     print('paciencia')
     break
+'''
+
+
+a = Semaphore() # 1
+
+a.acquire() # 0
+a.release() # 1
+a.release() # 1 ou 2
+
+a.acquire() # 0 ou 1
+a.acquire() # -1 ou 0
+

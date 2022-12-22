@@ -2,6 +2,7 @@ from classes.ListaSequencial import ListaSequencial
 from classes.ListaEncadeada import ListaEncadeada
 from classes.ArvoreAVL import AVLTree
 from classes.ChainingHashTable import ChainingHashTable, AbsentKeyException
+from threading import Semaphore
 
 '''
 Cada indice de self.__meses aponta para a AVL de dias daquele mês.
@@ -20,6 +21,11 @@ class GerenciadorReservas:
     def __init__(self, ano:int):
         self.__ano = ano
         self.__meses = ListaSequencial()
+        self.__mutexAVL = Semaphore()
+        self.__mutexHashTable = Semaphore()
+
+        # release é o up
+        # aquire é o down
 
         # Cria uma AVL de dias para cada mês.
         for i in range(1, 13):
@@ -29,8 +35,9 @@ class GerenciadorReservas:
 
     # Recupera a lista de mesas disponiveis de um dia específico.
     def verificarMesasDisponiveis(self, mes:int, dia:int):
-        # Recupera a AVL de dias e acessa a HashTable contida nela. 
+        # Recupera a AVL de dias e acessa a HashTable contida nela.  
         arvoreDias = self.__meses.elemento(mes)
+        self.__mutexAVL.acquire()
         hashTableReservas = arvoreDias.getNodeValue(dia)
         
         # Se o node do dia ainda não tiver sido criado, o cria, e acessa sua HashTable.
@@ -39,6 +46,9 @@ class GerenciadorReservas:
             hashTableReservas = arvoreDias.getNodeValue(dia)
 
         # Acessa a lista de mesas disponíveis e retorna todo o conteúdo dela já formatada para ser enviada pelo protocolo.
+        
+        
+        self.__mutexAVL.release()
         listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')
         return listaDisponiveis.stringify()
 
@@ -64,6 +74,10 @@ class GerenciadorReservas:
         return hashTableReservas
 
 
+
+
+    # Cliente 2/2/2023 mesa 10
+    # Cliente 2/2/2023 mesa 10
 
     # Método para inserção de reservas na Hash Table.
     def insereReserva(self, mes:int, dia:int, mesa:int, cliente:str):
@@ -139,10 +153,12 @@ class GerenciadorReservas:
         arvoreDias = self.__meses.elemento(mes)
         hashTableReservas = arvoreDias.getNodeValue(dia)
 
+        self.__mutexHashTable.acquire()
         entry = hashTableReservas.remove(cliente)
 
         listaDisponiveis = hashTableReservas.get('Mesas Disponiveis')
         listaDisponiveis.insereInicio(entry.value)
+        self.__mutexHashTable.release()
 
 
 # Fiquem a vontade para usar esses exemplos para entender melhor como a estrtura de dados funciona.
