@@ -374,7 +374,12 @@ while option != 's':
                 time.sleep(3)
                 break
             
-
+    
+    elif option == 's':
+        print(f'Até a próxima {nomeCliente}!\n')
+        time.sleep(3)
+        continue
+    
 
     # Listar reservas efetuadas pelo cliente.
     elif option == 'l' or 'd':
@@ -426,7 +431,3 @@ while option != 's':
             if status == '100':
                 print('Reserva removida com sucesso.\n')
                 time.sleep(3)
-
-    elif option == 's':
-        print(f'Até a próxima {nomeCliente}!\n')
-        
