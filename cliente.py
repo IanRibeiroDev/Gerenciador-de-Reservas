@@ -1,6 +1,7 @@
 import socket
 import time
 import datetime
+import sys
 
 # Função responsável por verificar se o nome que o usuário inseriu é válido.
 def validaNomeCliente(nomeCliente:str):
@@ -206,9 +207,14 @@ def enviarParaServidor(comando):
 
 
 
-# Inicia conexão com servidor.
+hostIP = 'localhost'
+
+if len(sys.argv) > 1:
+    hostIP = sys.argv[1]
+
+server_address = (hostIP, 60000)
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server_address = ('localhost', 60000)
+
 
 
 option = ''
