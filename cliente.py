@@ -218,7 +218,7 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 
 option = ''
-print('*****Gerenciador de Reservas GAIA*****') # GAIA = George Amanda IAn
+print('*****Gerenciador de Reservas*****')
 time.sleep(2)
 
 
